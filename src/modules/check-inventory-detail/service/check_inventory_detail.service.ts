@@ -13,7 +13,7 @@ import {
     DEFAULT_ORDER_BY,
     ORDER_DIRECTION,
 } from 'src/common/constants';
-import { Brackets, EntityManager, Like } from 'typeorm';
+import { Brackets, EntityManager, getConnection, Like } from 'typeorm';
 import { CheckInventoryDetail } from '../entity/check_inventory_detail.entity';
 import {
     CheckInventoryDetailQueryStringDto,
@@ -161,6 +161,21 @@ export class CheckInventoryDetailService {
             return savedMaterial;
         } catch (error) {
             throw error;
+        }
+    }
+
+    async bulkCreateCheckInventoryDetail(
+        checkInventoryDetails: CreateCheckInventoryDetailDto[],
+    ) {
+        try {
+            await getConnection()
+                .createQueryBuilder()
+                .insert()
+                .into(CheckInventoryDetail)
+                .values(checkInventoryDetails)
+                .execute();
+        } catch (err) {
+            throw err;
         }
     }
 }

@@ -1,0 +1,8 @@
+{
+    "message": {
+        "error": {
+            "statusExists": "Please complete the inventory check form before!",
+            "itemNotApprove": "Please approve the inventory detail before!"
+        }
+    }    
+}

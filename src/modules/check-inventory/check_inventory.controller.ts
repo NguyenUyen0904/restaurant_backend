@@ -40,14 +40,21 @@ import {
 } from './dto/check_inventory.dto';
 import { CheckInventory } from './entity/check_inventory.entity';
 import { CheckInventoryService } from './service/check_inventory.service';
+import { AcceptStatus } from '../common/common.constant';
+import { CommonDropdownService } from '../common/services/common-dropdown.service';
+import { CreateImportMaterialOrderDto } from '../import-material-order/dto/import_material_order.dto';
+import { CreateCheckInventoryDetailDto } from '../check-inventory-detail/dto/check_inventory_detail.dto';
+import { CheckInventoryDetailService } from '../check-inventory-detail/service/check_inventory_detail.service';
 
 @Controller('check-inventory')
 @UseGuards(JwtGuard, AuthorizationGuard)
 export class CheckInventoryController {
     constructor(
         private readonly checkInventoryService: CheckInventoryService,
+        private readonly checkInventoryDetailService: CheckInventoryDetailService,
         private readonly i18n: I18nRequestScopeService,
         private readonly databaseService: DatabaseService,
+        private readonly commonDropdownService: CommonDropdownService,
     ) {}
 
     @Get()
@@ -107,16 +114,40 @@ export class CheckInventoryController {
         body: CreateCheckInventoryDto,
     ) {
         try {
-            body.createdBy = req.loginUser.id;
-            const newCheckInventory =
-                await this.checkInventoryService.createCheckInventory(body);
-            await this.databaseService.recordUserLogging({
-                userId: req.loginUser?.id,
-                route: req.route,
-                oldValue: {},
-                newValue: { ...newCheckInventory },
-            });
-            return new SuccessResponse(newCheckInventory);
+            if (await this.checkInventoryService.checkCanCreateInventory()) {
+                body.createdBy = req.loginUser.id;
+                body.warehouseStaffId = req.loginUser.id;
+                body.status = AcceptStatus.WAITING_APPROVE;
+                const newCheckInventory =
+                    await this.checkInventoryService.createCheckInventory(body);
+                const materials = this.commonDropdownService.getListMaterial(
+                    {},
+                );
+                const importBody = (await materials).items.map(
+                    (item) =>
+                        ({
+                            materialId: item.id,
+                            inventoryQuantity: 0,
+                            damagedQuantity: 0,
+                            note: '',
+                            checkInventoryId: newCheckInventory.id,
+                            status: AcceptStatus.WAITING_APPROVE,
+                        } as CreateCheckInventoryDetailDto),
+                );
+                await this.checkInventoryDetailService.bulkCreateCheckInventoryDetail(
+                    importBody,
+                );
+                return new SuccessResponse(newCheckInventory);
+            } else {
+                const message = await this.i18n.translate(
+                    'check_inventory.message.error.statusExists',
+                );
+                return new ErrorResponse(
+                    HttpStatus.ITEM_ALREADY_EXIST,
+                    message,
+                    [],
+                );
+            }
         } catch (error) {
             throw new InternalServerErrorException(error);
         }
@@ -155,6 +186,21 @@ export class CheckInventoryController {
                     id,
                     body,
                 );
+
+            if (
+                body?.status === AcceptStatus.APPROVE &&
+                !(await this.checkInventoryService.checkCanApproveInventory(id))
+            ) {
+                const message = await this.i18n.translate(
+                    'check_inventory.message.error.itemNotApprove',
+                );
+                return new ErrorResponse(
+                    HttpStatus.ITEM_NOT_APPROVE,
+                    message,
+                    [],
+                );
+            }
+
             const newValue = await this.databaseService.getDataById(
                 CheckInventory,
                 id,

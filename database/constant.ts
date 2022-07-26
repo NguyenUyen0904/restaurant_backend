@@ -86,6 +86,7 @@ export enum DBPermissionActions {
     LOGIN = 'login',
     UPDATE_ROLE = 'update_role',
     CONVERT_MATERIAL = 'convert_material',
+    APPROVE_STATUS = 'approve_status',
 }
 
 export enum DBPermissionResources {

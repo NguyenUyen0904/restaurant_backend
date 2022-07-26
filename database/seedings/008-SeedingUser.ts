@@ -41,6 +41,13 @@ export class SeedingUser1720963593400 implements MigrationInterface {
                     email: 'uyen.nguyen.test@gmail.com',
                     isSuperAdmin: 1,
                 },
+                {
+                    ...userDefault,
+                    id: 3,
+                    fullName: 'Uyen admin',
+                    email: 'nguyen.uyen.0904@gmail.com',
+                    isSuperAdmin: 1,
+                },
             ];
 
             await queryRunner.manager

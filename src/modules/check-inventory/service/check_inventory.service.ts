@@ -1,3 +1,4 @@
+import { CheckInventoryDetail } from './../../check-inventory-detail/entity/check_inventory_detail.entity';
 import {
     Injectable,
     Optional,
@@ -13,7 +14,7 @@ import {
     DEFAULT_ORDER_BY,
     ORDER_DIRECTION,
 } from 'src/common/constants';
-import { EntityManager, Brackets, Like } from 'typeorm';
+import { EntityManager, Brackets, Like, Not } from 'typeorm';
 import {
     CheckInventoryQueryStringDto,
     CheckInventoryDetailResponseDto,
@@ -21,6 +22,7 @@ import {
     UpdateCheckInventoryDto,
 } from '../dto/check_inventory.dto';
 import { CheckInventory } from '../entity/check_inventory.entity';
+import { AcceptStatus } from 'src/modules/common/common.constant';
 
 const CheckInventoryAttribute: (keyof CheckInventory)[] = [
     'id',
@@ -139,6 +141,34 @@ export class CheckInventoryService {
             );
             const savedMaterial = await this.getCheckInventoryDetail(id);
             return savedMaterial;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async checkCanCreateInventory() {
+        try {
+            const count = await this.dbManager.count(CheckInventory, {
+                select: CheckInventoryAttribute,
+                where: {
+                    status: AcceptStatus.WAITING_APPROVE,
+                },
+            });
+            return count === 0;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async checkCanApproveInventory(checkInventoryId: number) {
+        try {
+            const count = await this.dbManager.count(CheckInventoryDetail, {
+                where: {
+                    status: Not(AcceptStatus.APPROVE),
+                    checkInventoryId,
+                },
+            });
+            return count === 0;
         } catch (error) {
             throw error;
         }
