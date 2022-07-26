@@ -42,7 +42,6 @@ import { ExportMaterial } from './entity/export_material.entity';
 import { ExportMaterialService } from './service/export_material.service';
 import { AcceptStatus } from '../common/common.constant';
 import { CommonDropdownService } from '../common/services/common-dropdown.service';
-import { CreateImportMaterialOrderDto } from '../import-material-order/dto/import_material_order.dto';
 import { ExportMaterialOrderService } from '../export-material-order/service/export_material_order.service';
 import { CreateExportMaterialOrderDto } from '../export-material-order/dto/export_material_order.dto';
 
@@ -177,6 +176,15 @@ export class ExportMaterialController {
                 ExportMaterial,
                 id,
             );
+            if (
+                body.status === AcceptStatus.APPROVE &&
+                oldExportMaterial.status != AcceptStatus.APPROVE
+            ) {
+                this.exportMaterialService.updateQuantityMaterialInWareHouse(
+                    id,
+                );
+                this.exportMaterialService.updateTotalPayment(id);
+            }
             await this.databaseService.recordUserLogging({
                 userId: req.loginUser?.id,
                 route: req.route,

@@ -174,14 +174,6 @@ export class ImportMaterialOrderController {
                 ImportMaterialOrder,
                 id,
             );
-            if (
-                body.status === AcceptStatus.APPROVE &&
-                oldImportMaterialOrder.status != AcceptStatus.APPROVE
-            ) {
-                this.importMaterialService.updateTotalPayment(
-                    material.importMaterialId,
-                );
-            }
             await this.databaseService.recordUserLogging({
                 userId: req.loginUser?.id,
                 route: req.route,

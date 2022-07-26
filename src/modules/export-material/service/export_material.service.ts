@@ -21,6 +21,11 @@ import {
     UpdateExportMaterialDto,
 } from '../dto/export_material.dto';
 import { ExportMaterial } from '../entity/export_material.entity';
+import { AcceptStatus } from 'src/modules/common/common.constant';
+import { ExportMaterialOrder } from 'src/modules/export-material-order/entity/export_material_order.entity';
+import { ImportMaterialOrder } from 'src/modules/import-material-order/entity/import_material_order.entity';
+import { ImportMaterial } from 'src/modules/import-material/entity/import_material.entity';
+import { Material } from 'src/modules/material/entity/material.entity';
 
 const ExportMaterialAttribute: (keyof ExportMaterial)[] = [
     'id',
@@ -141,6 +146,56 @@ export class ExportMaterialService {
             );
             const savedMaterial = await this.getExportMaterialDetail(id);
             return savedMaterial;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateQuantityMaterialInWareHouse(exportMaterialId: number) {
+        try {
+            const materials = await this.dbManager.find(ExportMaterialOrder, {
+                where: { exportMaterialId, status: AcceptStatus.APPROVE },
+            });
+            materials.forEach(async (element) => {
+                const material = await this.dbManager.findOne(Material, {
+                    where: {
+                        id: element.materialId,
+                    },
+                });
+
+                await this.dbManager.update(
+                    Material,
+                    {
+                        id: element.materialId,
+                    },
+                    {
+                        quantity: material.quantity - element.quantity,
+                    },
+                );
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateTotalPayment(exportMaterialId: number) {
+        try {
+            const materials = await this.dbManager.find(ExportMaterialOrder, {
+                where: { exportMaterialId, status: AcceptStatus.APPROVE },
+            });
+            let newTotalPayment = 0;
+            materials.forEach((element) => {
+                newTotalPayment += element.pricePerUnit * element.quantity;
+            });
+            await this.dbManager.update(
+                ExportMaterial,
+                {
+                    id: exportMaterialId,
+                },
+                {
+                    totalPaymentExport: newTotalPayment,
+                },
+            );
         } catch (error) {
             throw error;
         }

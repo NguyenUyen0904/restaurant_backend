@@ -183,6 +183,7 @@ export class ImportMaterialController {
                 this.importMaterialService.updateQuantityMaterialInWareHouse(
                     id,
                 );
+                this.importMaterialService.updateTotalPayment(id);
             }
             await this.databaseService.recordUserLogging({
                 userId: req.loginUser?.id,
