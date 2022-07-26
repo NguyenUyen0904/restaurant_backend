@@ -4,8 +4,8 @@
         "nameCustomer": "Name Customer",
         "phone": "Phone",
         "tableId": "id Table",
-        "arrivalTime": "arrival Time",
-        "numberPeople": "number People"            
+        "arrivalTime": "Arrival Time",
+        "numberPeople": "Number People"            
     },
     "message": {
         "error": {
