@@ -22,6 +22,7 @@ import { ImportMaterialOrderModule } from './modules/import-material-order/impor
 import { ExportMaterialOrderModule } from './modules/export-material-order/export_material_order.module';
 import { CheckInventoryModule } from './modules/check-inventory/check_inventory.module';
 import { CheckInventoryDetailModule } from './modules/check-inventory-detail/check_inventory_detail.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
     imports: [
@@ -49,6 +50,7 @@ import { CheckInventoryDetailModule } from './modules/check-inventory-detail/che
         ExportMaterialOrderModule,
         CheckInventoryModule,
         CheckInventoryDetailModule,
+        DashboardModule,
     ],
     controllers: [AppController],
     providers: [GlobalDataService],
