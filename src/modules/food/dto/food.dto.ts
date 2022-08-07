@@ -10,9 +10,9 @@ import {
     MIN_PAGE_SIZE,
     ORDER_DIRECTION,
 } from 'src/common/constants';
-import { OrderBy } from '../material.constant';
+import { OrderBy } from '../food.constant';
 
-export const MaterialListQueryStringSchema = Joi.object().keys({
+export const FoodListQueryStringSchema = Joi.object().keys({
     page: Joi.number().min(MIN_PAGE).max(MAX_PAGE).optional(),
     limit: Joi.number().min(MIN_PAGE_SIZE).max(MAX_PAGE_SIZE).optional(),
     keyword: Joi.string().max(INPUT_TEXT_MAX_LENGTH).optional().allow(null, ''),
@@ -26,25 +26,25 @@ export const MaterialListQueryStringSchema = Joi.object().keys({
         .allow(null, ''),
 });
 
-export const MaterialSchema = {
-    material: Joi.string()
+export const FoodSchema = {
+    foodName: Joi.string()
         .max(INPUT_TEXT_MAX_LENGTH)
         .optional()
         .allow(null, ''),
-    limitOver: Joi.number().max(MAX_INTEGER).optional().allow(null, ''),
-    unit: Joi.string().max(INPUT_TEXT_MAX_LENGTH).optional().allow(null, ''),
-    quantity: Joi.number().max(MAX_INTEGER).optional().allow(null, ''),
+    price: Joi.number().max(MAX_INTEGER).optional().allow(null, ''),
+    categoryId: Joi.number().max(MAX_INTEGER).optional().allow(null, ''),
+    foodImgId: Joi.number().max(MAX_INTEGER).optional().allow(null, ''),
 };
 
-export const UpdateMaterialSchema = Joi.object().keys({
-    ...MaterialSchema,
+export const CreateFoodSchema = Joi.object().keys({
+    ...FoodSchema,
 });
 
-export const CreateMaterialSchema = Joi.object().keys({
-    ...MaterialSchema,
+export const UpdateFoodSchema = Joi.object().keys({
+    ...FoodSchema,
 });
 
-export class MaterialQueryStringDto {
+export class FoodQueryStringDto {
     page?: number;
     limit?: number;
     keyword?: string;
@@ -52,28 +52,29 @@ export class MaterialQueryStringDto {
     orderDirection?: ORDER_DIRECTION;
 }
 
-export class CreateMaterialDto {
-    material: string;
-    limitOver?: number;
-    unit?: string;
-    quantity: number;
-    createdBy: number;
+export class CreateFoodDto {
+    foodName: string;
+    price: number;
+    foodImgId?: number;
+    categoryId?: number;
+    createdBy?: number;
 }
 
-export class UpdateMaterialDto {
-    material?: string;
-    limitOver?: number;
-    unit?: string;
-    quantity?: number;
+export class UpdateFoodDto {
+    foodName: string;
+    price: number;
+    foodImgId?: number;
+    categoryId?: number;
     updatedBy?: number;
 }
 
-export class MaterialDetailResponseDto {
+export class FoodDetailResponseDto {
     id: number;
-    material: string;
-    limitOver?: number;
-    unit?: string;
-    quantity: number;
+    foodName: string;
+    price: number;
+    foodImgId?: number;
+    foodImg?: Record<string, string>;
+    categoryId?: number;
     createdBy?: number;
     createdAt?: Date;
     updatedAt?: Date;

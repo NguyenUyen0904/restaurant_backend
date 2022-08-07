@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 import { TABLE_NAME } from '../constant';
 
-export class Material1632891593042 implements MigrationInterface {
+export class Booking1632891593031 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: TABLE_NAME.Materials,
+                name: TABLE_NAME.Foods,
                 columns: [
                     {
                         name: 'id',
@@ -15,25 +15,31 @@ export class Material1632891593042 implements MigrationInterface {
                         generationStrategy: 'increment',
                     },
                     {
-                        name: 'material',
+                        name: 'foodName',
                         type: 'varchar',
                         length: '255',
-                        isNullable: true,
+                        isNullable: false,
                     },
                     {
-                        name: 'unit',
+                        name: 'foodImgId',
                         type: 'varchar',
-                        length: '255',
+                        length: '2500',
                         isNullable: true,
                     },
                     {
-                        name: 'quantity',
+                        name: 'price',
                         type: 'int',
-                        isNullable: true,
+                        isNullable: false,
                     },
                     {
-                        name: 'limitOver',
+                        name: 'categoryId',
                         type: 'int',
+                        isNullable: false,
+                    },
+                    {
+                        name: 'descriptions',
+                        type: 'varchar',
+                        length: '2000',
                         isNullable: true,
                     },
                     {
@@ -72,6 +78,6 @@ export class Material1632891593042 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable(TABLE_NAME.Materials);
+        await queryRunner.dropTable(TABLE_NAME.Foods);
     }
 }

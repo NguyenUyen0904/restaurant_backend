@@ -1,3 +1,4 @@
+import { Material } from 'src/modules/material/entity/material.entity';
 import { ImportMaterial } from './../../import-material/entity/import_material.entity';
 import { IRevenueChartListQuery } from '../dashboard.interface';
 import { Injectable, Optional, Inject } from '@nestjs/common';
@@ -169,6 +170,7 @@ export class DashboardService {
                     },
                 );
             }
+
             return {
                 importMaterialTotalPayment,
                 importMaterialCount,

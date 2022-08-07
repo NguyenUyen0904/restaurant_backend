@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 import { TABLE_NAME } from '../constant';
 
-export class Material1632891593042 implements MigrationInterface {
+export class Booking1632891593030 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: TABLE_NAME.Materials,
+                name: TABLE_NAME.Categories,
                 columns: [
                     {
                         name: 'id',
@@ -15,25 +15,15 @@ export class Material1632891593042 implements MigrationInterface {
                         generationStrategy: 'increment',
                     },
                     {
-                        name: 'material',
+                        name: 'name',
                         type: 'varchar',
                         length: '255',
-                        isNullable: true,
+                        isNullable: false,
                     },
                     {
-                        name: 'unit',
+                        name: 'note',
                         type: 'varchar',
                         length: '255',
-                        isNullable: true,
-                    },
-                    {
-                        name: 'quantity',
-                        type: 'int',
-                        isNullable: true,
-                    },
-                    {
-                        name: 'limitOver',
-                        type: 'int',
                         isNullable: true,
                     },
                     {
@@ -72,6 +62,6 @@ export class Material1632891593042 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable(TABLE_NAME.Materials);
+        await queryRunner.dropTable(TABLE_NAME.Categories);
     }
 }

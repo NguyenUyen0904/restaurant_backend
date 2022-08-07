@@ -37,6 +37,8 @@ export enum PermissionResources {
     STORE_CHECK_INVENTORY = 'store_check_inventory',
     STORE_INVENTORY_DETAIL = 'store_inventory_detail',
     ROLE = 'role',
+    MENU_FOOD = 'food',
+    MENU_CATEGORY = 'category',
 }
 
 export enum PermissionActions {

@@ -34,6 +34,8 @@ export enum TABLE_NAME {
     ExportMaterialOrders = 'export_material_orders',
     CheckInventories = 'check_inventories',
     CheckInventoryDetails = 'check_inventory_details',
+    Categories = 'categories',
+    Foods = 'foods',
 }
 
 export const commonColumns: TableColumnOptions[] = [
@@ -104,4 +106,6 @@ export enum DBPermissionResources {
     STORE_CHECK_INVENTORY = 'store_check_inventory',
     STORE_INVENTORY_DETAIL = 'store_inventory_detail',
     ROLE = 'role',
+    MENU_FOOD = 'food',
+    MENU_CATEGORY = 'category',
 }

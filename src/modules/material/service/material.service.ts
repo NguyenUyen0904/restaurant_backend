@@ -25,6 +25,7 @@ import {
 const MaterialAttribute: (keyof Material)[] = [
     'id',
     'material',
+    'limitOver',
     'unit',
     'quantity',
     'updatedAt',

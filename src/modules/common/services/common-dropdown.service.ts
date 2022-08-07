@@ -5,6 +5,8 @@ import { Brackets, EntityManager, In, Not } from 'typeorm';
 import { DEFAULT_LIMIT_FOR_DROPDOWN } from '../../../common/constants';
 import {
     ListBankDropdown,
+    ListCategoryDropdown,
+    ListFoodDropdown,
     ListMaterialDropdown,
     ListProvinceDropdown,
     ListRoleDropdown,
@@ -23,6 +25,9 @@ import {
 import { Province } from 'src/modules/user/entity/province.entity';
 import { UserStatus } from 'src/modules/user/user.constant';
 import { Material } from 'src/modules/material/entity/material.entity';
+import { makeFileUrl } from 'src/common/helpers/common.function';
+import { Category } from 'src/modules/category/entity/category.entity';
+import { Food } from 'src/modules/food/entity/food.entity';
 
 const userDropdownListAttributes: (keyof User)[] = ['id', 'fullName', 'status'];
 const roleDropdownListAttributes: (keyof Role)[] = ['id', 'name'];
@@ -32,10 +37,17 @@ const materialDropdownListAttributes: (keyof Material)[] = [
     'id',
     'material',
     'unit',
+    'limitOver',
     'quantity',
 ];
 
 const supplierDropdownListAttributes: (keyof Supplier)[] = ['id', 'name'];
+const categoryDropdownListAttributes: (keyof Category)[] = [
+    'id',
+    'name',
+    'note',
+];
+const foodDropdownListAttributes: (keyof Food)[] = ['id', 'foodName', 'price'];
 @Injectable()
 export class CommonDropdownService {
     constructor(
@@ -244,6 +256,67 @@ export class CommonDropdownService {
             return {
                 totalItems,
                 items,
+            };
+        } catch (error) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    async getListCategory(query: QueryDropdown): Promise<ListCategoryDropdown> {
+        try {
+            const { page, limit } = query;
+            const [items, totalItems] = await this.dbManager.findAndCount(
+                Category,
+                {
+                    select: categoryDropdownListAttributes,
+                    where: (queryBuilder) =>
+                        this.generateQueryBuilder(queryBuilder, {
+                            page,
+                            limit,
+                            status: [],
+                            withDeleted: false,
+                        }),
+                },
+            );
+            return {
+                totalItems,
+                items,
+            };
+        } catch (error) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    async getListFood(query: QueryDropdown): Promise<ListFoodDropdown> {
+        try {
+            const { page, limit } = query;
+            const [items, totalItems] = await this.dbManager.findAndCount(
+                Food,
+                {
+                    select: foodDropdownListAttributes,
+                    where: (queryBuilder) =>
+                        this.generateQueryBuilder(queryBuilder, {
+                            page,
+                            limit,
+                            status: [],
+                            withDeleted: false,
+                        }),
+                    relations: ['category', 'foodImgFile'],
+                },
+            );
+            return {
+                totalItems,
+                items: items.map((item) => {
+                    return {
+                        ...item,
+                        foodImg: item.foodImgFile
+                            ? {
+                                  ...item.foodImgFile,
+                                  url: makeFileUrl(item.foodImgFile.fileName),
+                              }
+                            : null,
+                    };
+                }),
             };
         } catch (error) {
             throw new InternalServerErrorException();
