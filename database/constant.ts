@@ -36,6 +36,7 @@ export enum TABLE_NAME {
     CheckInventoryDetails = 'check_inventory_details',
     Categories = 'categories',
     Foods = 'foods',
+    Promotions = 'promotions',
 }
 
 export const commonColumns: TableColumnOptions[] = [
@@ -108,4 +109,5 @@ export enum DBPermissionResources {
     ROLE = 'role',
     MENU_FOOD = 'food',
     MENU_CATEGORY = 'category',
+    PROMOTION = 'promotion',
 }

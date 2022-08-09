@@ -45,9 +45,7 @@ import {
     UpdateCategoryDto,
 } from './dto/category.dto';
 
-@Controller({
-    path: 'category',
-})
+@Controller('category')
 @UseGuards(JwtGuard, AuthorizationGuard)
 export class CategoryController {
     constructor(

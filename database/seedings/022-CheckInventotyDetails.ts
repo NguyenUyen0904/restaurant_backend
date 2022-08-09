@@ -1,4 +1,3 @@
-import { CheckInventoryDetail } from './../../src/modules/check-inventory-detail/entity/check_inventory_detail.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { TABLE_NAME } from '../constant';

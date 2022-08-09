@@ -39,6 +39,7 @@ export enum PermissionResources {
     ROLE = 'role',
     MENU_FOOD = 'food',
     MENU_CATEGORY = 'category',
+    PROMOTION = 'promotion',
 }
 
 export enum PermissionActions {

@@ -25,6 +25,7 @@ import { CheckInventoryDetailModule } from './modules/check-inventory-detail/che
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { FoodModule } from './modules/food/food.module';
 import { CategoryModule } from './modules/category/category.module';
+import { PromotionModule } from './modules/promotion/promotion.module';
 
 @Module({
     imports: [
@@ -55,6 +56,7 @@ import { CategoryModule } from './modules/category/category.module';
         DashboardModule,
         FoodModule,
         CategoryModule,
+        PromotionModule,
     ],
     controllers: [AppController],
     providers: [GlobalDataService],
