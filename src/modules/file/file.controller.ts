@@ -8,6 +8,7 @@ import {
     Get,
     Param,
     ParseIntPipe,
+    Request,
 } from '@nestjs/common';
 import { JwtGuard } from '../../common/guards/jwt.guard';
 import {
@@ -35,11 +36,13 @@ export class FileController {
 
     @Post()
     async create(
+        @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(registerFileSchema))
-        data: RegisterFileDto,
+        body: RegisterFileDto,
     ) {
         try {
-            const newFile = await this.fileService.createFile(data);
+            body.createdBy = req?.loginUser?.id;
+            const newFile = await this.fileService.createFile(body);
             return new SuccessResponse(newFile);
         } catch (error) {
             throw new InternalServerErrorException(error);

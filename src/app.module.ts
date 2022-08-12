@@ -26,6 +26,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { FoodModule } from './modules/food/food.module';
 import { CategoryModule } from './modules/category/category.module';
 import { PromotionModule } from './modules/promotion/promotion.module';
+import { FileModule } from './modules/file/file.module';
 
 @Module({
     imports: [
@@ -57,6 +58,7 @@ import { PromotionModule } from './modules/promotion/promotion.module';
         FoodModule,
         CategoryModule,
         PromotionModule,
+        FileModule,
     ],
     controllers: [AppController],
     providers: [GlobalDataService],

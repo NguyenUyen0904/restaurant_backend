@@ -13,7 +13,7 @@ import {
     DEFAULT_ORDER_BY,
     ORDER_DIRECTION,
 } from 'src/common/constants';
-import { EntityManager, Brackets, Like } from 'typeorm';
+import { EntityManager, Brackets, Like, In } from 'typeorm';
 import { Food } from '../entity/food.entity';
 import {
     FoodQueryStringDto,
@@ -41,7 +41,7 @@ export class FoodService {
         private readonly dbManager: EntityManager,
     ) {}
 
-    generateQueryBuilder(queryBuilder, { keyword }) {
+    generateQueryBuilder(queryBuilder, { keyword, categories }) {
         if (keyword) {
             const likeKeyword = `%${keyword}%`;
             queryBuilder.andWhere(
@@ -54,6 +54,12 @@ export class FoodService {
                 }),
             );
         }
+
+        if (categories && categories.length > 0) {
+            queryBuilder.andWhere({
+                categoryId: In(categories),
+            });
+        }
     }
 
     async getFoodList(query: FoodQueryStringDto) {
@@ -64,6 +70,7 @@ export class FoodService {
                 limit = DEFAULT_LIMIT_FOR_PAGINATION,
                 orderBy = DEFAULT_ORDER_BY,
                 orderDirection = ORDER_DIRECTION.ASC,
+                categories = [],
             } = query;
             const take = +limit || DEFAULT_LIMIT_FOR_PAGINATION;
             const skip = (+page - 1) * take || 0;
@@ -74,6 +81,7 @@ export class FoodService {
                     where: (queryBuilder) =>
                         this.generateQueryBuilder(queryBuilder, {
                             keyword,
+                            categories,
                         }),
                     order: {
                         [orderBy]: orderDirection.toUpperCase(),

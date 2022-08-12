@@ -12,6 +12,7 @@ export class RegisterFileDto {
     readonly mimetype: string;
     readonly size: number;
     url: string;
+    createdBy?: number;
 }
 
 export const registerFileSchema = Joi.object().keys({

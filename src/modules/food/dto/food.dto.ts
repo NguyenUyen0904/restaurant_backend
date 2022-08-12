@@ -24,6 +24,7 @@ export const FoodListQueryStringSchema = Joi.object().keys({
         .valid(...Object.values(ORDER_DIRECTION))
         .optional()
         .allow(null, ''),
+    categories: Joi.array().items(Joi.number()).optional().allow(null, ''),
 });
 
 export const FoodSchema = {
@@ -50,6 +51,7 @@ export class FoodQueryStringDto {
     keyword?: string;
     orderBy?: OrderBy;
     orderDirection?: ORDER_DIRECTION;
+    categories?: number[];
 }
 
 export class CreateFoodDto {

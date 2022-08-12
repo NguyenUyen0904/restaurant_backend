@@ -48,8 +48,4 @@ export default Joi.object({
     [ConfigKey.AWS_REGION]: Joi.string().required(),
     [ConfigKey.AWS_S3_BUCKET]: Joi.string().required(),
     [ConfigKey.AWS_S3_DOMAIN]: Joi.string().required(),
-
-    [ConfigKey.SLACK_SIGNING_SECRET]: Joi.string().required(),
-    [ConfigKey.SLACK_BOT_TOKEN]: Joi.string().required(),
-    [ConfigKey.SLACK_APP_TOKEN]: Joi.string().required(),
 });
