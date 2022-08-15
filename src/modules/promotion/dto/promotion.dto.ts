@@ -1,3 +1,4 @@
+import { PromotionStatus } from './../promotion.constant';
 import { MAX_INTEGER } from '../../../common/constants';
 import * as BaseJoi from 'joi';
 import JoiDate from '@joi/date';
@@ -24,12 +25,20 @@ export const PromotionListQueryStringSchema = Joi.object().keys({
         .valid(...Object.values(ORDER_DIRECTION))
         .optional()
         .allow(null, ''),
+    status: Joi.string()
+        .valid(...Object.values(PromotionStatus))
+        .optional()
+        .allow(null, ''),
 });
 
 export const PromotionSchema = {
     name: Joi.string().max(INPUT_TEXT_MAX_LENGTH).optional().allow(null, ''),
     note: Joi.string().max(INPUT_TEXT_MAX_LENGTH).optional().allow(null, ''),
     percent: Joi.number().max(MAX_INTEGER).optional().allow(null, ''),
+    status: Joi.string()
+        .valid(...Object.values(PromotionStatus))
+        .optional()
+        .allow(null, ''),
 };
 
 export const CreatePromotionSchema = Joi.object().keys({
@@ -46,19 +55,22 @@ export class PromotionQueryStringDto {
     keyword?: string;
     orderBy?: OrderBy;
     orderDirection?: ORDER_DIRECTION;
+    status: PromotionStatus;
 }
 
 export class CreatePromotionDto {
     name: string;
     percent: number;
     note?: string;
+    status: PromotionStatus;
     createdBy?: number;
 }
 
 export class UpdatePromotionDto {
-    name: string;
-    percent: number;
+    name?: string;
+    percent?: number;
     note?: string;
+    status?: PromotionStatus;
     updatedAt?: Date;
 }
 
@@ -67,6 +79,7 @@ export class PromotionDetailResponseDto {
     name: string;
     percent: number;
     note?: string;
+    status: PromotionStatus;
     createdBy?: number;
     createdAt?: Date;
     updatedAt?: Date;

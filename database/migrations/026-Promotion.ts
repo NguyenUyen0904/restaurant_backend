@@ -1,3 +1,4 @@
+import { PromotionStatus } from './../../src/modules/promotion/promotion.constant';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 import { TABLE_NAME } from '../constant';
 
@@ -24,6 +25,12 @@ export class Promotion1632891593050 implements MigrationInterface {
                         name: 'percent',
                         type: 'int',
                         isNullable: false,
+                    },
+                    {
+                        name: 'status',
+                        type: 'enum',
+                        enum: Object.values(PromotionStatus),
+                        isNullable: true,
                     },
                     {
                         name: 'note',

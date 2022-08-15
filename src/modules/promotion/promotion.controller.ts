@@ -41,6 +41,7 @@ import {
 } from './dto/promotion.dto';
 import { Promotion } from './entity/promotion.entity';
 import { PromotionService } from './service/promotion.service';
+import { PromotionStatus } from './promotion.constant';
 
 @Controller('promotion')
 @UseGuards(JwtGuard, AuthorizationGuard)
@@ -107,6 +108,7 @@ export class PromotionController {
     ) {
         try {
             body.createdBy = req.loginUser.id;
+            body.status = PromotionStatus.ACTIVE;
             const newPromotion = await this.promotionService.createPromotion(
                 body,
             );

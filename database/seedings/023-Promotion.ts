@@ -1,3 +1,4 @@
+import { PromotionStatus } from './../../src/modules/promotion/promotion.constant';
 import { Promotion } from './../../src/modules/promotion/entity/promotion.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import * as dotenv from 'dotenv';
@@ -11,6 +12,7 @@ export class SeedingPromotion1720963593410 implements MigrationInterface {
                 name: 'Khai trương',
                 percent: 50,
                 node: 'check',
+                status: PromotionStatus.ACTIVE,
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 createdBy: 1,
@@ -20,6 +22,7 @@ export class SeedingPromotion1720963593410 implements MigrationInterface {
                 name: 'Quốc khánh',
                 percent: 30,
                 node: 'check',
+                status: PromotionStatus.INACTIVE,
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 createdBy: 1,

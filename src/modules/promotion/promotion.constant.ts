@@ -8,3 +8,8 @@ export const MODULE_NAME = 'food';
 export enum OrderBy {
     CREATED_AT = 'createdAt',
 }
+
+export enum PromotionStatus {
+    ACTIVE = 'ACTIVE',
+    INACTIVE = 'INACTIVE',
+}

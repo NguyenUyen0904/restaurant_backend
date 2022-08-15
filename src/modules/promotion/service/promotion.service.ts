@@ -21,14 +21,13 @@ import {
     CreatePromotionDto,
     UpdatePromotionDto,
 } from '../dto/promotion.dto';
-import { File } from 'src/modules/file/entity/file.entity';
-import { makeFileUrl } from 'src/common/helpers/common.function';
 
 const PromotionAttribute: (keyof Promotion)[] = [
     'id',
     'name',
     'percent',
     'note',
+    'status',
     'createdAt',
 ];
 
@@ -40,7 +39,7 @@ export class PromotionService {
         private readonly dbManager: EntityManager,
     ) {}
 
-    generateQueryBuilder(queryBuilder, { keyword }) {
+    generateQueryBuilder(queryBuilder, { keyword, status }) {
         if (keyword) {
             const likeKeyword = `%${keyword}%`;
             queryBuilder.andWhere(
@@ -53,6 +52,12 @@ export class PromotionService {
                 }),
             );
         }
+
+        if (status) {
+            queryBuilder.andWhere({
+                status,
+            });
+        }
     }
 
     async getPromotionList(query: PromotionQueryStringDto) {
@@ -63,6 +68,7 @@ export class PromotionService {
                 limit = DEFAULT_LIMIT_FOR_PAGINATION,
                 orderBy = DEFAULT_ORDER_BY,
                 orderDirection = ORDER_DIRECTION.ASC,
+                status = '',
             } = query;
             const take = +limit || DEFAULT_LIMIT_FOR_PAGINATION;
             const skip = (+page - 1) * take || 0;
@@ -73,6 +79,7 @@ export class PromotionService {
                     where: (queryBuilder) =>
                         this.generateQueryBuilder(queryBuilder, {
                             keyword,
+                            status,
                         }),
                     order: {
                         [orderBy]: orderDirection.toUpperCase(),

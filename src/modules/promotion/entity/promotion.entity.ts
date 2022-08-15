@@ -1,3 +1,4 @@
+import { PromotionStatus } from './../promotion.constant';
 import { Entity, Column } from 'typeorm';
 import { BaseEntity } from 'src/common/entities/BaseEntity';
 
@@ -11,4 +12,7 @@ export class Promotion extends BaseEntity {
 
     @Column({ length: 2000, nullable: true })
     note: string;
+
+    @Column({ nullable: true })
+    status: PromotionStatus;
 }
