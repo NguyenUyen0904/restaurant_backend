@@ -199,6 +199,10 @@ export class CheckInventoryController {
                     message,
                     [],
                 );
+            } else {
+                this.checkInventoryService.updateQuantityMaterialInWareHouse(
+                    id,
+                );
             }
 
             const newValue = await this.databaseService.getDataById(

@@ -94,7 +94,7 @@ export class ConvertMaterialController {
 
     @Post()
     @Permissions([
-        `${PermissionResources.STORE_CONVERT}_${PermissionActions.CREATE}`,
+        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.CONVERT_MATERIAL}`,
     ])
     async createConvertMaterial(
         @Request() req,

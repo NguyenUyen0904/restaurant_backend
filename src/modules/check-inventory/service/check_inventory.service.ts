@@ -23,6 +23,7 @@ import {
 } from '../dto/check_inventory.dto';
 import { CheckInventory } from '../entity/check_inventory.entity';
 import { AcceptStatus } from 'src/modules/common/common.constant';
+import { Material } from 'src/modules/material/entity/material.entity';
 
 const CheckInventoryAttribute: (keyof CheckInventory)[] = [
     'id',
@@ -169,6 +170,27 @@ export class CheckInventoryService {
                 },
             });
             return count === 0;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateQuantityMaterialInWareHouse(checkInventoryId: number) {
+        try {
+            const materials = await this.dbManager.find(CheckInventoryDetail, {
+                where: { checkInventoryId, status: AcceptStatus.APPROVE },
+            });
+            materials.forEach(async (element) => {
+                await this.dbManager.update(
+                    Material,
+                    {
+                        id: element.materialId,
+                    },
+                    {
+                        quantity: element.inventoryQuantity,
+                    },
+                );
+            });
         } catch (error) {
             throw error;
         }

@@ -118,21 +118,21 @@ export class ExportMaterialController {
             body.status = AcceptStatus.WAITING_APPROVE;
             const newExportMaterial =
                 await this.exportMaterialService.createExportMaterial(body);
-            const materials = this.commonDropdownService.getListMaterial({});
-            const exportBody = (await materials).items.map(
-                (item) =>
-                    ({
-                        materialId: item.id,
-                        pricePerUnit: 0,
-                        quantity: 0,
-                        note: '',
-                        exportMaterialId: newExportMaterial.id,
-                        status: AcceptStatus.APPROVE,
-                    } as CreateExportMaterialOrderDto),
-            );
-            await this.exportMaterialOrderService.bulkCreateImportMaterialOrders(
-                exportBody,
-            );
+            // const materials = this.commonDropdownService.getListMaterial({});
+            // const exportBody = (await materials).items.map(
+            //     (item) =>
+            //         ({
+            //             materialId: item.id,
+            //             pricePerUnit: 0,
+            //             quantity: 0,
+            //             note: '',
+            //             exportMaterialId: newExportMaterial.id,
+            //             status: AcceptStatus.APPROVE,
+            //         } as CreateExportMaterialOrderDto),
+            // );
+            // await this.exportMaterialOrderService.bulkCreateImportMaterialOrders(
+            //     exportBody,
+            // );
             return new SuccessResponse(newExportMaterial);
         } catch (error) {
             throw new InternalServerErrorException(error);
