@@ -36,14 +36,7 @@ import { RoleList } from './dto/responses/api-response.dto';
 import { RoleResponseDto } from './dto/responses/role-response.dto';
 import { RoleService } from './services/role.service';
 import { Role } from './entity/role.entity';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { User } from '../user/entity/user.entity';
 import {
@@ -63,7 +56,6 @@ export class RoleController {
     ) {}
 
     @Get('/permissions')
-    @Permissions([`${PermissionResources.ROLE}_${PermissionActions.READ}`])
     getPermisisons() {
         try {
             const permissionListGroupByResource = resourceList.map(
@@ -94,7 +86,6 @@ export class RoleController {
     }
 
     @Get()
-    @Permissions([`${PermissionResources.ROLE}_${PermissionActions.READ}`])
     async getRoles(
         @Query(new JoiValidationPipe(RoleListQueryStringSchema))
         query: RoleListQueryStringDto,
@@ -109,7 +100,6 @@ export class RoleController {
     }
 
     @Post()
-    @Permissions([`${PermissionResources.ROLE}_${PermissionActions.CREATE}`])
     async create(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(CreateRoleSchema))
@@ -162,7 +152,6 @@ export class RoleController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.ROLE}_${PermissionActions.READ}`])
     async getRole(@Param('id', ParseIntPipe) id: number) {
         try {
             const role: RoleResponseDto = await this.roleService.getRole(id);
@@ -179,7 +168,6 @@ export class RoleController {
     }
 
     @Patch(':id')
-    @Permissions([`${PermissionResources.ROLE}_${PermissionActions.UPDATE}`])
     async updateRole(
         @Request() req,
         @Param('id') id: number,
@@ -244,7 +232,6 @@ export class RoleController {
     }
 
     @Delete(':id')
-    @Permissions([`${PermissionResources.ROLE}_${PermissionActions.DELETE}`])
     async remove(@Request() req, @Param('id', ParseIntPipe) id: number) {
         try {
             const role = await this.databaseService.checkItemExist(

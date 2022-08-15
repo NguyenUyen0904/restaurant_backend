@@ -18,14 +18,7 @@ import {
     ErrorResponse,
     SuccessResponse,
 } from 'src/common/helpers/api.response';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
@@ -49,9 +42,6 @@ export class ConvertMaterialController {
     ) {}
 
     @Get()
-    @Permissions([
-        `${PermissionResources.STORE_CONVERT}_${PermissionActions.READ}`,
-    ])
     async getConvertHistories(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -69,9 +59,6 @@ export class ConvertMaterialController {
     }
 
     @Get(':id')
-    @Permissions([
-        `${PermissionResources.STORE_CONVERT}_${PermissionActions.READ}`,
-    ])
     async getConvertMaterial(@Param('id', ParseIntPipe) id: number) {
         try {
             const convertMaterial =
@@ -93,9 +80,6 @@ export class ConvertMaterialController {
     }
 
     @Post()
-    @Permissions([
-        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.CONVERT_MATERIAL}`,
-    ])
     async createConvertMaterial(
         @Request() req,
         @Body(

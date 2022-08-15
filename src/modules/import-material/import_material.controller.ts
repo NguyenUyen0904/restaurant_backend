@@ -19,14 +19,7 @@ import {
     ErrorResponse,
     SuccessResponse,
 } from 'src/common/helpers/api.response';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
@@ -43,7 +36,6 @@ import { ImportMaterialService } from './service/import_material.service';
 import { AcceptStatus } from '../common/common.constant';
 import { CommonDropdownService } from '../common/services/common-dropdown.service';
 import { ImportMaterialOrderService } from '../import-material-order/service/import_material_order.service';
-import { CreateImportMaterialOrderDto } from '../import-material-order/dto/import_material_order.dto';
 
 @Controller('import-material')
 @UseGuards(JwtGuard, AuthorizationGuard)
@@ -57,9 +49,6 @@ export class ImportMaterialController {
     ) {}
 
     @Get()
-    @Permissions([
-        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.READ}`,
-    ])
     async getImportImportMaterials(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -77,9 +66,6 @@ export class ImportMaterialController {
     }
 
     @Get(':id')
-    @Permissions([
-        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.READ}`,
-    ])
     async getImportMaterial(@Param('id', ParseIntPipe) id: number) {
         try {
             const material =
@@ -101,9 +87,6 @@ export class ImportMaterialController {
     }
 
     @Post()
-    @Permissions([
-        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.CREATE}`,
-    ])
     async createImportMaterial(
         @Request() req,
         @Body(
@@ -140,9 +123,6 @@ export class ImportMaterialController {
     }
 
     @Patch(':id')
-    @Permissions([
-        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.UPDATE}`,
-    ])
     async updateImportMaterialStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

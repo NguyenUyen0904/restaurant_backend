@@ -23,14 +23,7 @@ import { JwtGuard } from '../../common/guards/jwt.guard';
 import { DatabaseService } from '../../common/services/database.service';
 
 import { Category } from './entity/category.entity';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
@@ -55,9 +48,6 @@ export class CategoryController {
     ) {}
 
     @Get()
-    @Permissions([
-        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.READ}`,
-    ])
     async getCategories(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -76,9 +66,6 @@ export class CategoryController {
     }
 
     @Get(':id')
-    @Permissions([
-        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.READ}`,
-    ])
     async getCategory(@Param('id', ParseIntPipe) id: number) {
         try {
             const category = await this.categoryService.getCategoryDetail(id);
@@ -99,9 +86,6 @@ export class CategoryController {
     }
 
     @Post()
-    @Permissions([
-        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.CREATE}`,
-    ])
     async create(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(CreateCategorySchema))
@@ -123,9 +107,6 @@ export class CategoryController {
     }
 
     @Patch(':id')
-    @Permissions([
-        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.UPDATE}`,
-    ])
     async updateCategory(
         @Request() req,
         @Param('id') id: number,
@@ -165,9 +146,6 @@ export class CategoryController {
     }
 
     @Delete(':id')
-    @Permissions([
-        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.DELETE}`,
-    ])
     async deleteCategory(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

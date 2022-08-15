@@ -20,14 +20,7 @@ import {
     ErrorResponse,
     SuccessResponse,
 } from 'src/common/helpers/api.response';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
@@ -52,7 +45,6 @@ export class FoodController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.MENU_FOOD}_${PermissionActions.READ}`])
     async getFoods(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -69,7 +61,6 @@ export class FoodController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.MENU_FOOD}_${PermissionActions.READ}`])
     async getFood(@Param('id', ParseIntPipe) id: number) {
         try {
             const food = await this.foodService.getFoodDetail(id);
@@ -90,9 +81,6 @@ export class FoodController {
     }
 
     @Post()
-    @Permissions([
-        `${PermissionResources.MENU_FOOD}_${PermissionActions.CREATE}`,
-    ])
     async createFood(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(CreateFoodSchema))
@@ -114,9 +102,6 @@ export class FoodController {
     }
 
     @Patch(':id')
-    @Permissions([
-        `${PermissionResources.MENU_FOOD}_${PermissionActions.UPDATE}`,
-    ])
     async updateFoodStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,
@@ -150,9 +135,6 @@ export class FoodController {
     }
 
     @Delete(':id')
-    @Permissions([
-        `${PermissionResources.MENU_FOOD}_${PermissionActions.DELETE}`,
-    ])
     async deleteFood(@Request() req, @Param('id', ParseIntPipe) id: number) {
         try {
             const oldFood = await this.databaseService.getDataById(Food, id);

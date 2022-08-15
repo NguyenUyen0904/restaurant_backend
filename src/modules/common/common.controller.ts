@@ -24,16 +24,9 @@ import {
     ListUserDropdown,
 } from './dto/responses/user-dropdown-response.dto';
 import { QueryDropdown } from './dto/request/dropdown.dto';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
 import { BookingStatus } from '../booking/booking.constant';
 import {
@@ -71,7 +64,6 @@ export class CommonController {
 
     @Get('/user')
     @UseGuards(JwtGuard, AuthorizationGuard)
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.READ}`])
     async getUsers(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -90,7 +82,6 @@ export class CommonController {
 
     @Get('/role')
     @UseGuards(JwtGuard, AuthorizationGuard)
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.READ}`])
     async getRoles(
         @Query(
             new RemoveEmptyQueryPipe(),

@@ -20,14 +20,7 @@ import {
     ErrorResponse,
     SuccessResponse,
 } from 'src/common/helpers/api.response';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
@@ -52,9 +45,6 @@ export class SupplierController {
     ) {}
 
     @Get()
-    @Permissions([
-        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.READ}`,
-    ])
     async getSuppliers(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -73,9 +63,6 @@ export class SupplierController {
     }
 
     @Get(':id')
-    @Permissions([
-        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.READ}`,
-    ])
     async getSupplier(@Param('id', ParseIntPipe) id: number) {
         try {
             const supplier = await this.supplierService.getSupplierDetail(id);
@@ -96,9 +83,6 @@ export class SupplierController {
     }
 
     @Post()
-    @Permissions([
-        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.CREATE}`,
-    ])
     async createSupplier(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(CreateSupplierSchema))
@@ -120,9 +104,6 @@ export class SupplierController {
     }
 
     @Patch(':id')
-    @Permissions([
-        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.UPDATE}`,
-    ])
     async updateSupplier(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,
@@ -165,9 +146,6 @@ export class SupplierController {
     }
 
     @Delete(':id')
-    @Permissions([
-        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.DELETE}`,
-    ])
     async deleteSupplier(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

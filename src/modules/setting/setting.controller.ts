@@ -24,11 +24,7 @@ import { SettingService } from './services/setting.service';
 import { SettingKey } from './setting.constant';
 import { GeneralSettingListQueryStringDto } from './dto/request/general-setting.dto';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import { PermissionActions, PermissionResources } from '../role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
 
@@ -41,7 +37,6 @@ export class SettingController {
     ) {}
 
     @Get('/')
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.READ}`])
     async getSetting(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -61,7 +56,6 @@ export class SettingController {
     }
 
     @Post('/')
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.UPDATE}`])
     async saveSetting(
         @Body(new TrimObjectPipe(), new JoiValidationPipe(settingSchema))
         data: GeneralSettingDto<GeneralSettingValueDto>,

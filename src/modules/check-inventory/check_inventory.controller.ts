@@ -19,14 +19,7 @@ import {
     ErrorResponse,
     SuccessResponse,
 } from 'src/common/helpers/api.response';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
@@ -42,7 +35,6 @@ import { CheckInventory } from './entity/check_inventory.entity';
 import { CheckInventoryService } from './service/check_inventory.service';
 import { AcceptStatus } from '../common/common.constant';
 import { CommonDropdownService } from '../common/services/common-dropdown.service';
-import { CreateImportMaterialOrderDto } from '../import-material-order/dto/import_material_order.dto';
 import { CreateCheckInventoryDetailDto } from '../check-inventory-detail/dto/check_inventory_detail.dto';
 import { CheckInventoryDetailService } from '../check-inventory-detail/service/check_inventory_detail.service';
 
@@ -58,9 +50,6 @@ export class CheckInventoryController {
     ) {}
 
     @Get()
-    @Permissions([
-        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.READ}`,
-    ])
     async getExportCheckInventorys(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -78,9 +67,6 @@ export class CheckInventoryController {
     }
 
     @Get(':id')
-    @Permissions([
-        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.READ}`,
-    ])
     async getCheckInventory(@Param('id', ParseIntPipe) id: number) {
         try {
             const material =
@@ -102,9 +88,6 @@ export class CheckInventoryController {
     }
 
     @Post()
-    @Permissions([
-        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.CREATE}`,
-    ])
     async createCheckInventory(
         @Request() req,
         @Body(
@@ -154,9 +137,6 @@ export class CheckInventoryController {
     }
 
     @Patch(':id')
-    @Permissions([
-        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.UPDATE}`,
-    ])
     async updateCheckInventoryStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

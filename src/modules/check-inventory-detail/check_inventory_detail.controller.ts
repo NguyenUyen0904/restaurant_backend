@@ -19,14 +19,7 @@ import {
     ErrorResponse,
     SuccessResponse,
 } from 'src/common/helpers/api.response';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
@@ -51,9 +44,6 @@ export class CheckInventoryDetailController {
     ) {}
 
     @Get()
-    @Permissions([
-        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.READ}`,
-    ])
     async getCheckInventoryDetails(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -73,9 +63,6 @@ export class CheckInventoryDetailController {
     }
 
     @Get(':id')
-    @Permissions([
-        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.READ}`,
-    ])
     async getCheckInventoryDetail(@Param('id', ParseIntPipe) id: number) {
         try {
             const material =
@@ -99,9 +86,6 @@ export class CheckInventoryDetailController {
     }
 
     @Post()
-    @Permissions([
-        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.CREATE}`,
-    ])
     async createCheckInventoryDetail(
         @Request() req,
         @Body(
@@ -129,9 +113,6 @@ export class CheckInventoryDetailController {
     }
 
     @Patch(':id')
-    @Permissions([
-        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.UPDATE}`,
-    ])
     async updateCheckInventoryDetailStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

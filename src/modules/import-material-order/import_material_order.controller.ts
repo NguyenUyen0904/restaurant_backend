@@ -1,4 +1,3 @@
-import { ImportMaterial } from './../import-material/entity/import_material.entity';
 import {
     Body,
     Controller,
@@ -20,21 +19,13 @@ import {
     ErrorResponse,
     SuccessResponse,
 } from 'src/common/helpers/api.response';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
 import {
     CreateImportMaterialOrderDto,
     CreateImportMaterialOrderSchema,
-    ImportMaterialDetailExcelDto,
     ImportMaterialDetailExcelSchema,
     ImportMaterialDetailExcelsDto,
     ImportMaterialOrderListQueryStringSchema,
@@ -61,9 +52,6 @@ export class ImportMaterialOrderController {
     ) {}
 
     @Get()
-    @Permissions([
-        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.READ}`,
-    ])
     async getImportMaterialOrders(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -83,9 +71,6 @@ export class ImportMaterialOrderController {
     }
 
     @Get(':id')
-    @Permissions([
-        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.READ}`,
-    ])
     async getImportMaterialOrder(@Param('id', ParseIntPipe) id: number) {
         try {
             const material =
@@ -109,9 +94,6 @@ export class ImportMaterialOrderController {
     }
 
     @Post()
-    @Permissions([
-        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.CREATE}`,
-    ])
     async createImportMaterialOrder(
         @Request() req,
         @Body(
@@ -140,9 +122,6 @@ export class ImportMaterialOrderController {
     }
 
     @Patch(':id')
-    @Permissions([
-        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.UPDATE}`,
-    ])
     async updateImportMaterialOrderStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,
@@ -187,9 +166,6 @@ export class ImportMaterialOrderController {
     }
 
     @Post('bulk-create')
-    @Permissions([
-        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.CREATE}`,
-    ])
     async importMaterialDetailExcel(
         @Request() req,
         @Body(

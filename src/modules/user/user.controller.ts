@@ -10,8 +10,6 @@ import {
     InternalServerErrorException,
     Query,
     ParseIntPipe,
-    UseInterceptors,
-    UploadedFile,
     Request,
 } from '@nestjs/common';
 import { I18nRequestScopeService } from 'nestjs-i18n';
@@ -28,7 +26,6 @@ import {
     UpdateUserSchema,
 } from './dto/requests/update-user.dto';
 import { JwtGuard } from '../../common/guards/jwt.guard';
-import { DEFAULT_LIMIT_FOR_PAGINATION } from '../../common/constants';
 import { UserList } from './dto/response/api-response.dto';
 import { DatabaseService } from '../../common/services/database.service';
 import { User } from './entity/user.entity';
@@ -41,20 +38,12 @@ import {
     UserStatusDto,
     UserStatusSchema,
 } from './dto/requests/common-user.dto';
-import { AllowUpdateStatus, excel, UserStatus } from './user.constant';
+import { AllowUpdateStatus, UserStatus } from './user.constant';
 import {
     ErrorResponse,
     SuccessResponse,
 } from '../../common/helpers/api.response';
-import { FileInterceptor } from '@nestjs/platform-express';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { userPositionList } from 'src/modules/common/services/global-data.service';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { HttpStatus } from 'src/common/constants';
@@ -75,7 +64,6 @@ export class UserController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.READ}`])
     async getUsers(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -92,7 +80,6 @@ export class UserController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.READ}`])
     async getUser(@Param('id', ParseIntPipe) id: number) {
         try {
             const user = await this.usersService.getUserById(id);
@@ -113,7 +100,6 @@ export class UserController {
     }
 
     @Post()
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.CREATE}`])
     async create(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(CreateUserSchema))
@@ -275,7 +261,6 @@ export class UserController {
     }
 
     @Patch(':id')
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.UPDATE}`])
     async updateUser(
         @Request() req,
         @Param('id') id: number,
@@ -441,7 +426,6 @@ export class UserController {
     }
 
     @Delete(':id')
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.DELETE}`])
     async delete(@Request() req, @Param('id', ParseIntPipe) id: number) {
         try {
             const user = await this.usersService.getUserById(id);
@@ -480,7 +464,6 @@ export class UserController {
     }
 
     @Patch(':id/status')
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.UPDATE}`])
     async updateUserStatus(
         @Request() req,
         @Param('id') id: number,
@@ -548,7 +531,6 @@ export class UserController {
     }
 
     @Post('bulk-create')
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.CREATE}`])
     async importAsset(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(ImportUserSchema))

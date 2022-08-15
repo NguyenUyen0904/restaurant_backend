@@ -38,10 +38,7 @@ import {
     SuccessResponse,
 } from '../../common/helpers/api.response';
 import { User } from '../user/entity/user.entity';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import {
     PermissionResources,
     PermissionActions,
@@ -228,7 +225,6 @@ export class AuthController {
 
     @Post('refresh-token')
     @UseGuards(JwtGuard, AuthorizationGuard)
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.LOGIN}`])
     async refreshToken(@Req() req) {
         try {
             const loginUser = req.loginUser;
@@ -255,7 +251,6 @@ export class AuthController {
 
     @Get('profile')
     @UseGuards(JwtGuard, AuthorizationGuard)
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.LOGIN}`])
     async profile(@Request() req) {
         try {
             const profile = await this.userService.getUserById(
@@ -276,7 +271,6 @@ export class AuthController {
     @Patch('profile')
     @UsePipes(new JoiValidationPipe(updateProfileSchema))
     @UseGuards(JwtGuard, AuthorizationGuard)
-    @Permissions([`${PermissionResources.USER}_${PermissionActions.LOGIN}`])
     async updateProfile(
         @Request() req,
         @Body(new TrimObjectPipe()) body: UpdateProfileDto,

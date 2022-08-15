@@ -19,14 +19,7 @@ import {
     ErrorResponse,
     SuccessResponse,
 } from 'src/common/helpers/api.response';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
@@ -52,9 +45,6 @@ export class ExportMaterialOrderController {
     ) {}
 
     @Get()
-    @Permissions([
-        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.READ}`,
-    ])
     async getExportMaterialOrders(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -74,9 +64,6 @@ export class ExportMaterialOrderController {
     }
 
     @Get(':id')
-    @Permissions([
-        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.READ}`,
-    ])
     async getExportMaterialOrder(@Param('id', ParseIntPipe) id: number) {
         try {
             const material =
@@ -100,9 +87,6 @@ export class ExportMaterialOrderController {
     }
 
     @Post()
-    @Permissions([
-        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.CREATE}`,
-    ])
     async createExportMaterialOrder(
         @Request() req,
         @Body(
@@ -131,9 +115,6 @@ export class ExportMaterialOrderController {
     }
 
     @Patch(':id')
-    @Permissions([
-        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.UPDATE}`,
-    ])
     async updateExportMaterialOrderStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

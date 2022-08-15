@@ -20,14 +20,7 @@ import {
     ErrorResponse,
     SuccessResponse,
 } from 'src/common/helpers/api.response';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
@@ -53,7 +46,6 @@ export class PromotionController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.PROMOTION}_${PermissionActions.READ}`])
     async getPromotions(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -72,7 +64,6 @@ export class PromotionController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.PROMOTION}_${PermissionActions.READ}`])
     async getPromotion(@Param('id', ParseIntPipe) id: number) {
         try {
             const promotion = await this.promotionService.getPromotionDetail(
@@ -95,9 +86,6 @@ export class PromotionController {
     }
 
     @Post()
-    @Permissions([
-        `${PermissionResources.PROMOTION}_${PermissionActions.CREATE}`,
-    ])
     async createPromotion(
         @Request() req,
         @Body(
@@ -125,9 +113,6 @@ export class PromotionController {
     }
 
     @Patch(':id')
-    @Permissions([
-        `${PermissionResources.PROMOTION}_${PermissionActions.UPDATE}`,
-    ])
     async updatePromotionStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,
@@ -173,9 +158,6 @@ export class PromotionController {
     }
 
     @Delete(':id')
-    @Permissions([
-        `${PermissionResources.PROMOTION}_${PermissionActions.DELETE}`,
-    ])
     async deletePromotion(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

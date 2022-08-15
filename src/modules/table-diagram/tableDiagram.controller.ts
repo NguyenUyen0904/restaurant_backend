@@ -36,15 +36,11 @@ import {
     UpdateTableSchema,
 } from './dto/requests/update-tablesRestaurant.dto';
 import { TablesRestaurant } from './entity/tablesRestaurant.entity';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
 import { TableStatus } from './tableDiagram.constant';
-import { PermissionResources, PermissionActions } from '../role/role.constants';
 
 @Controller('table')
 @UseGuards(JwtGuard, AuthorizationGuard)
@@ -57,9 +53,6 @@ export class TableDiagramController {
     ) {}
 
     @Get()
-    @Permissions([
-        `${PermissionResources.TABLE_DIAGRAM}_${PermissionActions.READ}`,
-    ])
     async getTables(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -78,9 +71,6 @@ export class TableDiagramController {
     }
 
     @Get(':id')
-    @Permissions([
-        `${PermissionResources.TABLE_DIAGRAM}_${PermissionActions.READ}`,
-    ])
     async getTable(@Param('id', ParseIntPipe) id: number) {
         try {
             const table = await this.tableDiagramService.getTableDetail(id);
@@ -101,9 +91,6 @@ export class TableDiagramController {
     }
 
     @Post()
-    @Permissions([
-        `${PermissionResources.TABLE_DIAGRAM}_${PermissionActions.CREATE}`,
-    ])
     async create(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(CreateTableSchema))
@@ -126,9 +113,6 @@ export class TableDiagramController {
     }
 
     @Patch(':id')
-    @Permissions([
-        `${PermissionResources.TABLE_DIAGRAM}_${PermissionActions.UPDATE}`,
-    ])
     async updateTable(
         @Request() req,
         @Param('id') id: number,
@@ -173,9 +157,6 @@ export class TableDiagramController {
     }
 
     @Delete(':id')
-    @Permissions([
-        `${PermissionResources.TABLE_DIAGRAM}_${PermissionActions.DELETE}`,
-    ])
     async deleteTable(@Request() req, @Param('id', ParseIntPipe) id: number) {
         try {
             const oldTable = await this.databaseService.getDataById(
